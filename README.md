@@ -12,23 +12,62 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Setting up GraphQL
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Apollo Client
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Install with reference to [here](https://www.apollographql.com/docs/react/get-started)
 
-## Learn More
+```sh
+npm install @apollo/client graphql
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Codegen
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 1. Install its CLI with reference to [here](https://www.graphql-code-generator.com/docs/getting-started/installation)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```sh
+npm install -D @graphql-codegen/cli
+```
 
-## Deploy on Vercel
+#### 2. Install its plugins with reference to [here](https://www.graphql-code-generator.com/docs/guides/react#apollo-and-urql)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+npm install -D @graphql-codegen/typed-document-node
+npm install -D @graphql-codegen/typescript
+npm install -D @graphql-codegen/typescript-operations
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### 3. Configure the plugin
+
+Create or update your codegen.yaml file as follows:
+
+```yml
+schema: http://my-graphql-api.com/graphql
+documents: "./src/**/*.graphql"
+generates:
+  ./src/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typed-document-node
+```
+
+#### 4. Run the codegen
+
+```sh
+npx graphql-codegen
+```
+
+## Note
+
+### GraphQL Code Generator vs [Apollo CLI](https://github.com/apollographql/apollo-tooling)
+
+[This error](https://qiita.com/koedamon/items/0fd3a01f7e398e54b747) 😫
+
+More error 🤯
+
+```sh
+error @apollo/federation@0.27.0: The engine "node" is incompatible with this module. Expected version ">=12.13.0 <17.0". Got "18.3.0"
+error Found incompatible module.
+```
